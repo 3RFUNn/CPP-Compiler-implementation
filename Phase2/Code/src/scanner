@@ -1,0 +1,148 @@
+// code for users
+
+%%
+// Define macros and states
+// This code was written by Erfan Rafiee and Farbod Fooladi
+%class RFOSK
+%line
+%column
+%public
+%unicode
+%final
+%function next_symbol
+%type Symbol
+%state STRING
+%implements Lexical
+
+%{
+     public class Symbol {
+     Object value;
+     String type;
+     int lineNumber;
+
+     public Symbol(String type , Object value , int lineNumber){
+         this.lineNumber=lineNumber;
+         this.type=type;
+         this.value=value;
+
+     }
+ }
+
+    public String nextToken(){
+          try{
+            if (current  == null){
+                return "$";
+            }
+            else{
+                return current.type;
+            }
+
+          }catch (Exception e){
+              e.printStackTrace();
+              return null;
+          }
+    }
+
+    public int ICV;
+    public double RCV;
+
+%}
+
+Number = [0-9]
+Char = [A-Za-z]
+
+Decimal = [0-9]+
+HEX = [0][Xx][0-9a-fA-F]+
+Real = [0-9]+[\.][0-9]*
+
+ScientificNotation =({Decimal}|{Real})[eE][\-\+]?[0-9]+
+
+Underline = "_"
+SpecialChar = [\\][ntr\\\'\"]
+Operators_and_Punctuation = ([\%\|\&\^\.\,\;\[\]\(\)\{\}]|[\+\-\|\&]{2}|[\+\*\-\>\<\/\!\=][\=]?)
+
+LineTerminators = \r|\n|\r\n
+InputCharacters = [^\r\n]
+WhiteSpace =  [ \t\f] | {LineTerminators}
+
+Identifier = {Char}({Number} | {Underline} | {Char}){0,30}
+
+
+CommentType1 = "//" {InputCharacters}* {LineTerminators}?
+CommentType2 = "/*" [^*] ~"*/" | "/*"~"*/"
+Comment = {CommentType1} | {CommentType2}
+
+Reserved_KeyWord =
+"new"| "func"| "return"| "inputStr"| "inputInt"| "in"|
+"static"| "class"| "for"| "len"| "loop"| "print"|
+"let"| "void"| "int"| "real"| "bool"| "string"|
+"while"| "break"| "continue"| "if"| "range"| "else"
+
+%%
+
+<YYINITIAL> {
+    {HEX} {
+        String Hexadecimal = yytext();
+        ICV = Integer.parseInt(Hexadecimal.substring(2) , 16);
+        System.out.println("Hexadecimal: "+ Hexadecimal +" with decimal value of "+ ICV);
+        return new Symbol("Integer",Hexadecimal, yyline);
+    }
+    {Decimal} {
+        ICV = Integer.parseInt(yytext());
+        System.out.println("DeciamlNumber: "+ ICV);
+        return new Symbol("Integer",ICV, yyline);
+    }
+    {Real} {
+        RCV = Double.parseDouble(yytext());
+        System.out.println("RealNumber: "+ RCV);
+        return new Symbol("Real", RCV, yyline);
+    }
+    {Operators_and_Punctuation} {
+        return new Symbol("Operator_and_Punctuations",yytext(), yyline);
+    }
+    {WhiteSpace} {
+        return new Symbol("WhiteSpace",yytext(), yyline);
+    }
+    {Reserved_KeyWord} {
+            return new Symbol("Reserved_Keyword",yytext() , yyline);
+       }
+        {Identifier} {
+            return new Symbol("identifiers",yytext() , yyline);
+        }
+        {Comment} {
+            return new Symbol("Comment",yytext() , yyline);
+        }
+        {ScientificNotation} {
+            String ScientificNum = yytext();
+            RCV = Double.parseDouble(ScientificNum);
+            System.out.println("ScientificNotation: "+ ScientificNum + " with decimal value of "+ RCV);
+            return new Symbol("Real",ScientificNum, yyline);
+        }
+   "\"" {
+        yybegin(STRING);
+        return new Symbol("StringLiteral",yytext(), yyline);
+    }
+}
+
+<STRING> {
+    \"  {
+        yybegin(YYINITIAL);
+        return new Symbol("StringLiteral",yytext(), yyline);
+    }
+    {WhiteSpace} {
+        return new Symbol("WhiteSpace",yytext(), yyline);
+    }
+    [^\n\r\"\\] {
+        return new Symbol("String",yytext(), yyline);
+        }
+    {SpecialChar} {
+        return new Symbol("Special Characters",yytext(), yyline);
+    }
+}
+
+
+[^] {
+// return the error occured in line and index and character of the scanned code
+     System.out.println("Error at line: "+yyline + "index: "+ yycolumn + "character = "+ yytext());
+     return new Symbol("Undefined", yytext() , yyline) ;
+}
