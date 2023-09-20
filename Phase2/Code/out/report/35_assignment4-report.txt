@@ -1,0 +1,10 @@
+DeciamlNumber: 10
+DeciamlNumber: 0
+DeciamlNumber: 1
+DeciamlNumber: 1
+DeciamlNumber: 2
+DeciamlNumber: 2
+DeciamlNumber: 0
+DeciamlNumber: 1
+Error happened while parsing ...
+At node 96: current token is * but except: [(]
