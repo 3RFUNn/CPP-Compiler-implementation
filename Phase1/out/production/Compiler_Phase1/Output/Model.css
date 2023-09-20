@@ -1,0 +1,46 @@
+body {
+    background-color: #1c1c1c;
+}
+div{
+    display: inline-block;
+}
+p {
+    margin: 3px 5px;
+}
+.Reserved_Keyword {
+    color: #B667F1;
+}
+.identifiers {
+    color: #FFFFFF;
+}
+.Integer {
+    color: #FFC300;
+}
+.Real {
+    color: #FFC300;
+    font-style: italic;
+}
+.StringLiteral {
+    color: #fce566;
+}
+.String {
+    color: #00C897;
+}
+.Special {
+    color: #B8FFF9;
+    font-style: italic;
+}
+.Comment {
+    color: #69676C;
+}
+.Operator_and_Punctuations {
+    color: #90E0EF;
+}
+.Undefined {
+    color: #FF1818;
+}
+.count {
+    margin-right: 5px;
+    color: #757474;
+    font-weight: lighter;
+}
