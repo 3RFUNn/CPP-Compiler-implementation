@@ -1,0 +1,6 @@
+Error happened while parsing ...
+At node 82: current token is ) but except: [identifiers, ], ), comma, [, (, ;, --, ++, ., =, *=, +=, /=, -=, &&, ||, >=, ==, <=, <, >, !=, -, +, *, /, len, new, inputInt, inputStr, range, StringLiteral, Real, Integer, true, false]
+At node 61: current token is ) but except: [], ), comma, (, ;, --, ++, &&, ||, >=, ==, <=, <, >, !=, -, +, *, /]
+At node 59: current token is ) but except: [), (, ;, &&, ||, >=, ==, <=, <, >, !=]
+At node 54: current token is ) but except: [), (, ;, &&, ||]
+At node 128: current token is ) but except: [(]

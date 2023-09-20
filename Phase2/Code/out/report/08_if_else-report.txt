@@ -1,0 +1,4 @@
+DeciamlNumber: 20
+Error happened while parsing ...
+At node 110: current token is if but except: [identifiers, }, ), func, let, --, ++, break, continue, print, return, for, if, else, while]
+At node 159: current token is if but except: [else]
